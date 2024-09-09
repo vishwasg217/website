@@ -24,6 +24,7 @@ theme:
 plugins:
   - search
   - awesome-pages
+  - mkdocs-jupyter
   
 nav:
   - Home: index.md
@@ -33,6 +34,8 @@ nav:
       - Introduction To Transformers: ai-course/module-1/intro-to-transformers.md
       - Breakdown Of Transformers: ai-course/module-1/breakdown-of-transformers.md
       - NLP Before Transformers: ai-course/module-1/nlp-before-transformers.md
+    - Module 2:
+      - Sample Notebook: ai-course/module-2/sample.ipynb
 
 markdown_extensions: 
   - toc:
