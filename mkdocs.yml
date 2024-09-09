@@ -1,0 +1,20 @@
+site_name: My Docs
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+  language: en
+
+plugins:
+  - search
+  - awesome-pages
+  
+nav:
+  - Home: index.md
+  - About: about.md
+  - AI Course: 
+    - Module 1:
+      - Introduction To Transformers: ai-course/module-1/intro-to-transformers.md
+      - Breakdown Of Transformers: ai-course/module-1/breakdown-of-transformers.md
+      - NLP Before Transformers: ai-course/module-1/nlp-before-transformers.md
