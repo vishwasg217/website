@@ -20,11 +20,11 @@
 
 **Here are some of the projects I have worked on**:
 
-* [FinSight: Financial Insights At Your Fingertips](https://github.com/vishwasg217/fin-sight)
+* <a href="https://github.com/vishwasg217/fin-sight" target="_blank" rel="noopener noreferrer">FinSight: Financial Insights At Your Fingertips</a>
 
-* [ML From Scratch: Core Machine Algos Implemented From Scratch](https://github.com/vishwasg217/ml-from-scratch)
+* <a href="https://github.com/vishwasg217/ml-from-scratch" target="_blank" rel="noopener noreferrer">ML From Scratch: Core Machine Algos Implemented From Scratch</a>
 
-* [AI Email Campaign Generator](https://github.com/vishwasg217/recommender)
+* <a href="https://github.com/vishwasg217/recommender" target="_blank" rel="noopener noreferrer">AI Email Campaign Generator</a>
 
 ## Blogs
 
