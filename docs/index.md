@@ -4,17 +4,29 @@
 
 **I am a passionate AI/ML Engineer. I love working on ML and NLP problems, and I'm currently building LLM-based solutions in finance at [Pipe Technologies](https://pipe.com/)**
 
-<div style="text-align: center ;margin-top: 50px;">
+<div style="text-align: center; margin-top:30px;">
+
 <a href="https://github.com/vishwasg217" target="_blank" style="margin-right: 60px;">
-    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
+    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github" style="transition: transform 0.3s, filter 0.3s; filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));"/>
 </a>
+
 <a href="https://www.linkedin.com/in/vishwasgowda217/" target="_blank" style="margin-right: 60px;">
-    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/linkedin.png" alt="linkedin"/>
+    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/linkedin.png" alt="linkedin" style="transition: transform 0.3s, filter 0.3s; filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));"/>
 </a>
+
 <a href="https://twitter.com/imvishwas_g/" target="_blank">
-    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/twitterx--v2.png" alt="twitterx--v2"/>
+    <img width="40" height="40" src="https://img.icons8.com/ios-glyphs/30/twitterx--v2.png" alt="twitterx--v2" style="transition: transform 0.3s, filter 0.3s; filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));"/>
 </a>
+
 </div>
+
+<style>
+a img:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.6));
+    cursor: pointer;
+}
+</style>
 
 ## Projects
 
