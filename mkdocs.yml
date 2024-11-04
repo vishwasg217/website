@@ -6,6 +6,11 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.indexes
+    - navigation.sections
+    - navigation.expand
+    - navigation.instant
+    - navigation.instant.progress
   language: en
   palette:
     - scheme: default
@@ -24,10 +29,14 @@ theme:
 plugins:
   - search
   - awesome-pages
+  - blog: 
+      blog_dir: blog
+      post_dir: blog/posts
   
 nav:
   - Home: index.md
-
+  - Blog: 
+    - blog/index.md
 
 markdown_extensions: 
   - toc:
