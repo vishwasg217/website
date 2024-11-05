@@ -11,6 +11,8 @@ theme:
     - navigation.expand
     - navigation.instant
     - navigation.instant.progress
+    - search.suggest
+    - search.highlight
   language: en
   palette:
     - scheme: default
@@ -29,6 +31,7 @@ theme:
 plugins:
   - search
   - awesome-pages
+  - tags
   - blog: 
       blog_dir: blog
       post_dir: blog/posts

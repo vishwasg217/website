@@ -1,9 +1,7 @@
 ---
 draft: false
 date: 2024-11-01
-categories:
-    - First
-    - Post
+comments: true
 ---
 
 # First Post
