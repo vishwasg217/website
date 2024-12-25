@@ -35,6 +35,14 @@ plugins:
   - blog: 
       blog_dir: blog
       post_dir: blog/posts
+      blog_toc: true
+      categories: true
+      categories_allowed: 
+        - AI
+        - NLP
+        - RAG
+        - ML
+        - Engineering
   
 nav:
   - Home: index.md

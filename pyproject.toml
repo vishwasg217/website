@@ -12,7 +12,13 @@ python = "^3.11"
 mkdocs = "^1.6.1"
 mkdocs-material = {extras = ["imaging"], version = "^9.5.34"}
 mkdocs-awesome-pages-plugin = "^2.9.3"
+python-dotenv = "^1.0.1"
+openai = "^1.58.1"
+mkdocs-jupyter = "^0.25.1"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]
