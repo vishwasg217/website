@@ -67,9 +67,9 @@ The ReAct Agent Framework Diagram above shows the different components and the s
 * **LLM**: The large language model is used to generate the reasoning and action steps.
 * **Tools**: The tools are the external APIs, databases, calculators, etc. that the ReAct agent has access to solve the task.
 * **Traces**: This is a list of steps takes by the React Agent to solve the task. Each step contains the following:
-  1. Thought: The LLM's reasoning about the query why a particular action was taken.
-  2. Action: The action that the ReAct agent takes to solve the task.
-  3. Observation: The output of the tool that the ReAct agent used to solve the task.
+    1. Thought: The LLM's reasoning about the query why a particular action was taken.
+    2. Action: The action that the ReAct agent takes to solve the task.
+    3. Observation: The output of the tool that the ReAct agent used to solve the task.
 Along with the Tools Desceiptions, the Traces are sent to the LLM to generate the next step in the sequence. This new step is added back to the Traces and the process is repeated until a final satisfactory answer is obtained.
 * **Tools Description**: This contains a description of each of the tools that is available to the ReAct agent. This can be APIs, databases, calculators, etc.
 * **Tool Call and Tool Response**: The Tool Call is a specific query that contains the tool name and its parameters. The Tool Response is the output of that tool, which becomes the observation in the trace.
