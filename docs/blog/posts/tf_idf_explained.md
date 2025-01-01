@@ -1,6 +1,18 @@
+---
+date: 2025-01-01
+comments: true
+tags:
+    - NLP
+    - Information Retrieval
+categories:
+    - NLP
+---
+
 # Understanding TF-IDF: A Comprehensive Guide
 
-## Introduction
+TF-IDF (Term Frequency-Inverse Document Frequency) is a popular technique in Natural Language Processing (NLP) for text analysis and information retrieval. It is used to evaluate the importance of a word in a document relative to a collection of documents (corpus). This guide provides an in-depth explanation of TF-IDF, its intuition, mathematical formulation, and implementation from scratch.
+
+<!-- more -->
 
 ## Intuition behind TF-IDF
 
@@ -13,9 +25,6 @@ Before TF-IDF, the most common methods for text representation was Bag of Words 
 2. Doesn't account for word rarity: BOW doesn't consider the uniqueness of words across documents. Common words like "the", "is", "and" appear in many documents and are less helpful in distinguishing one document from another.
 
 ### How TF IDF overcomes these problems
-
-- High frequency within a document (TF)
-- Unique to few documents (IDF)
 
 TF-IDF is a statistical measure that evaluates the importance of a word in a document relative to a collection of documents (corpus). It combines two metrics: Term Frequency (TF) and Inverse Document Frequency (IDF).
 
@@ -43,17 +52,15 @@ Low TF-IDF: The word is either common across the corpus or not frequent in the d
 
 ### Pros
 
-1. Simple and easy to understand
-2. Effective in identifying important words in a document
-3. Can be used for many NLP tasks like text classification, clustering, and information retrieval.
-4. Sparse representation
-5. Works with large datasets and high-dimensional data ? not sure about this one
+1. **Simple and easy to implement**: TF-IDF is straightforward to implement, making it accessible for various applications in text analysis and NLP.
+2. **Effective Keyword Extraction**: It ranks words based on their frequency in a document relative to their frequency across a corpus, which enhances the identification of significant keywords.
+3. **Works with large datasets**: The more sophisticated implementations of TF-IDF can handle large datasets efficiently.
 
 ### Cons
 
-1. Doesn't consider the order of words
-2. Does not have semantic understanding
-3. No Handling of Synonyms or Polysemy: It cannot resolve ambiguity in meaning (e.g., "bank" as a financial institution vs. a riverbank).
+1. **Biased towards long documents**: TF-IDF can be biased towards longer documents, as they tend to have higher term frequencies.
+2. **Does not have semantic understanding**: TF-IDF does not consider the semantic meaning of words, which can lead to misinterpretation in context-rich environments.
+3. **No Handling of Synonyms or Polysemy**: While TF-IDF is effective, it may not perform as well in scenarios requiring deeper contextual understanding, such as sentiment analysis or nuanced language processing. It cannot resolve ambiguity in meaning (e.g., "bank" as a financial institution vs. a riverbank).
 
 ## The Math Behind TF-IDF
 
@@ -81,7 +88,7 @@ $$
 $$
 
 - $|D|$: The total number of documents in the collection $D$.
-- $|d \in D : t \in d|$: The number of documents in which the term $t$ appears. 
+- $|d \in D : t \in d|$: The number of documents in which the term $t$ appears.
 - $1$: Added to avoid division by zero in case $t$ does not appear in any document.
 
 ---
@@ -101,7 +108,13 @@ $$
 
 ## Building TF-IDF from Scratch
 
-### Code with explanation
+### TF-IDF Vectorizer Implementation
+
+The `TfidfVectorizer` class is implemented in Python to calculate the TF-IDF score for a given corpus of documents. The class has three main methods:
+
+1. `fit(corpus)`: This method calculates the vocabulary and document frequency for the given corpus.
+2. `transform(corpus)`: This method calculates the TF-IDF score for each document in the corpus.
+3. `fit_transform(corpus)`: This method combines the `fit` and `transform` methods to calculate the TF-IDF score in a single step.
 
 ```python
 import numpy as np
@@ -114,33 +127,45 @@ class TfidfVectorizer:
         self.vocabulary = {}
         self.document_frequency = {}
         
-    def fit(self, corpus): 
+    def fit(self, corpus: list[str]): 
+        # create vocabulary
         for doc in corpus:
             for word in set(doc.lower().split()):
                 if word not in self.vocabulary:
                     self.vocabulary[word] = len(self.vocabulary)
 
-        # doc frequency
+        # calculate the number of documents in which the terms in the vocabulary appears.
         self.document_frequency = {term: 0 for term in self.vocabulary}
         for doc in corpus:
             unique_terms = set(doc.lower().split())
             for word in unique_terms:
                 self.document_frequency[word] += 1
 
-        # IDF calculation
+        # calculate the inverse document frequency
         self.inverse_document_frequency = {}
         N = len(corpus)
         for term, df in self.document_frequency.items():
             self.inverse_document_frequency[term] = math.log(N/df+1)
+```
 
-    def transform(self, corpus):
+The `fit` method does the following:
+
+1. Builds the vocabulary by reading through each document in the `corpus`. It breaks the document into words, converts them to lowercase, and takes only the unique words (using `set()`). It checks if each word is already in self.vocabulary. If not, it adds the word with a unique index (using the current length of the dictionary as the index).
+2. `self.document_frequency` is initialized as a dictionary where each word (from the vocabulary) starts with a count of 0. For each document it extracts the unique words. Then, for each unique word in the document, increase its document frequency (DF) by 1.
+3. Calculates the Inverse Document Frequency (IDF) for each term in the vocabulary. It uses the formula: $\text{IDF}(t, D) = \log \left( \frac{|D|}{1 + |d \in D : t \in d|} \right)$.
+
+```python
+    def transform(self, corpus: list[str]) -> np.ndarray:
+        # initialize a matrix of zeros
         tf_idf_matrix = np.zeros((len(corpus), len(self.vocabulary)))
 
+        # count the term frequency for each document
         for i, doc in enumerate(corpus):
             term_count = {}
             for term in doc.lower().split():
                 term_count[term] = term_count.get(term, 0) + 1
 
+            # calculate the tf-idf score for each term in the document
             for term, count in term_count.items():
                 if term in self.vocabulary:
                     tf = count
@@ -149,11 +174,23 @@ class TfidfVectorizer:
 
         return tf_idf_matrix 
     
-    def fit_transform(self, corpus):
+    def fit_transform(self, corpus: list[str]) -> np.ndarray:
         self.fit(corpus)
         result = self.transform(corpus)
         return result
+```
 
+The `transform` method does the following:
+
+1. A 2D matrix of zeros is created. Rows = Number of documents in the corpus. Columns = Number of unique words in the vocabulary.
+2. Loop through each document in the corpus. For each document, count the frequency of each term, which is basically the Term Frequency (TF).
+3. Calculate the TF-IDF score for each term in the document. If the term is in the vocabulary, calculate the TF-IDF score by using the TF values calculated in the previous step and the IDF values calculated during the `fit` method.
+
+The `fit_transform` method combines the `fit` and `transform` methods to calculate the TF-IDF score in a single step.
+
+### Example Usage
+
+```python
 corpus = [
     "Apple Apple Banana",
     "Banana Mango Banana",
@@ -169,7 +206,7 @@ corpus = [
     "Blueberries Strawberries Cherry",
 ]
 
-def format_matrix(vocab, matrix):
+def format_matrix(vocab: dict, matrix: np.ndarray) -> pd.DataFrame:
     if len(vocab) == len(matrix[0]):
         terms = list(vocab)
         return pd.DataFrame(
@@ -181,16 +218,182 @@ def format_matrix(vocab, matrix):
 
 
 tf_idf = TfidfVectorizer()
-# tf_idf.fit(corpus)
 
-result = tf_idf.fit_transform(corpus)
+tfidf_matrix = tf_idf.fit_transform(corpus)
 
 print(f"Vocab: {tf_idf.vocabulary}")
 print(f"Document Frequency: {tf_idf.document_frequency}")
 print(f"IDF: {tf_idf.inverse_document_frequency}")
 print("Result:")
-format_matrix(tf_idf.vocabulary, result)
+format_matrix(tf_idf.vocabulary, tfidf_matrix)
 ```
+
+**Output**:
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>apple</th>
+      <th>banana</th>
+      <th>mango</th>
+      <th>cherry</th>
+      <th>grapes</th>
+      <th>berries</th>
+      <th>strawberries</th>
+      <th>blueberries</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.197225</td>
+      <td>1.223775</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>2.447551</td>
+      <td>1.386294</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>4.828314</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>5.83773</td>
+      <td>2.564949</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.098612</td>
+      <td>1.223775</td>
+      <td>1.386294</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1.098612</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>1.609438</td>
+      <td>1.609438</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.098612</td>
+      <td>1.223775</td>
+      <td>1.386294</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>5.83773</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.098612</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>1.609438</td>
+      <td>1.609438</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2.197225</td>
+      <td>1.223775</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.386294</td>
+      <td>4.828314</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.609438</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>1.609438</td>
+      <td>1.609438</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ### Visualization and explanation
 
@@ -226,7 +429,7 @@ The above chart shows how the IDF score changes as per the number of documents i
 ```python
 from sklearn.metrics.pairwise import cosine_similarity
 
-def retrieve_docs(query: str, corpus: list[str], result, tf_idf, top_k: int = 3):
+def retrieve_docs(query: str, corpus: list[str], docs_vector, tf_idf, top_k: int = 3):
     query_vector = tf_idf.transform([query])
     similarity_score = cosine_similarity(query_vector, result)
     ranked_indices = similarity_score.argsort()[0][::-1][:top_k]
@@ -256,3 +459,9 @@ Query: banana mango
  {'doc': 'Apple Banana Apple', 'score': 0.322},
  {'doc': 'Apple Apple Banana', 'score': 0.322}]
 ```
+
+The `retrieve_docs` function takes a query, corpus and returns the top-k most similar documents from the corpus based on the cosine similarity between the query and the documents. The function uses the `cosine_similarity` function from `sklearn` to calculate the similarity scores.
+
+## Conclusion
+
+While TF-IDF has it's limitations, it remains a powerful tool for text analysis and information retrieval. It also layed the foundation for more advanced techniques like BM25 and word embeddings. Understanding the intuition, math, and implementation of TF-IDF is essential for anyone working with text data.
