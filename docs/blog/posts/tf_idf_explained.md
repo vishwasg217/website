@@ -8,7 +8,7 @@ categories:
     - NLP
 ---
 
-# Understanding TF-IDF: A Comprehensive Guide
+# A Comprehensive Guide on TF-IDF
 
 TF-IDF (Term Frequency-Inverse Document Frequency) is a popular technique in Natural Language Processing (NLP) for text analysis and information retrieval. It is used to evaluate the importance of a word in a document relative to a collection of documents (corpus). This guide provides an in-depth explanation of TF-IDF, its intuition, mathematical formulation, and implementation from scratch.
 

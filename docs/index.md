@@ -43,3 +43,5 @@ a img:hover {
 [How I built the Streamlit LLM Hackathon winning app — FinSight using LlamaIndex.](https://www.llamaindex.ai/blog/how-i-built-the-streamlit-llm-hackathon-winning-app-finsight-using-llamaindex-9dcf6c46d7a0): A technical dive into building the FinSight app using LlamaIndex.
 
 [Understanding and Building ReAct Agents](./blog/posts/react_agent_from_scratch.md): A detailed guide on ReAct agents and building it from scratch.
+
+[Comprehensive Guide on TF-IDF](./blog/posts/tf_idf_explained.md): A detailed blog on TF-IDF and its workings under the hood.
