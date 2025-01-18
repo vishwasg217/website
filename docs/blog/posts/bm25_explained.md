@@ -121,11 +121,161 @@ Here, both are similar because $n_t$ is moderate.
   \text{IDF} = \log\left(\frac{100 - 1 + 0.5}{1 + 0.5} + 1\right) = \log\left(\frac{99.5}{1.5} + 1\right) = \log(67.33) \approx 4.208
   $$
 
-
 ## Code implementation of BM25
 
 ### Simple implemenation using library
 
+```python
+from rank_bm25 import BM25Okapi
+
+corpus = [
+    "Apple Apple Banana",
+    "Banana Mango Banana",
+    "Cherry Cherry Strawberries",
+    "Grapes Grapes Strawberries Grapes",
+    "Apple Banana Mango",
+    "Blueberries Strawberries Apple",
+    "Apple Banana Mango",
+    "Grapes Grapes Grapes",
+    "Blueberries Apple Strawberries",
+    "Apple Banana Apple",
+    "Cherry Cherry Mango Cherry",
+    "Blueberries Strawberries Cherry",
+]
+tokenized_corpus = [doc.lower().split(" ") for doc in corpus]
+bm25 = BM25Okapi(tokenized_corpus)
+
+query = "banana mango"
+tokenized_query = query.lower().split(" ")
+
+doc_scores = bm25.get_scores(tokenized_query)
+print(doc_scores)
+
+docs = bm25.get_top_n(tokenized_query, tokenized_corpus, n=5)
+docs
+```
+
+**Output**
+```python
+[0.3176789  1.10212021 0.         0.         0.96909597 0.
+ 0.96909597 0.         0.         0.3176789  0.56864878 0.        ]
+[['banana', 'mango', 'banana'],
+ ['apple', 'banana', 'mango'],
+ ['apple', 'banana', 'mango'],
+ ['cherry', 'cherry', 'mango', 'cherry'],
+ ['apple', 'banana', 'apple']]
+```
+
 ### From scratch implementation
+
 #### from scratch module
+
+```python
+import math
+import numpy as np
+from collections import Counter
+
+class BM25:
+    def __init__(self, corpus: list[str], k1: float = 1.2, b: float = 0.75):
+        tokenized_corpus = [doc.lower().split(" ") for doc in corpus]
+        self.k1 = k1
+        self.b = b
+        self.N = len(tokenized_corpus)
+        self.doc_len = []
+        self.avg_dl = None
+        self.nd, self.document_frequencies = self.initialize(tokenized_corpus)
+        self.idf = self.calculate_idf(self.nd)
+
+    def initialize(self, corpus):
+        nd = {}
+        document_frequencies = []
+        total_doc_len = 0
+        for doc in corpus:
+            doc_len = len(doc)
+            self.doc_len.append(doc_len)
+            total_doc_len += doc_len
+            document_frequencies.append(dict(Counter(doc)))
+            for term in set(doc):
+                if term not in nd:
+                    nd[term] = 1
+                else: 
+                    nd[term] += 1
+
+        self.avg_dl = total_doc_len / self.N
+        return nd, document_frequencies
+
+    def calculate_idf(self, nd):
+        idf = {}
+        for term in nd:
+            idf[term] = math.log((self.N - nd[term] + 0.5) / (nd[term] + 0.5) + 1)
+
+        return idf
+    
+    def get_scores(self, query: str):
+        query = query.lower().split(" ")
+        scores = np.zeros(self.N)
+        for q in query:
+            idf_q = self.idf[q]
+            # this is a list of f_q since we are calculating the score for each document 
+            f_q = np.array([doc.get(q, 0)  for doc in self.document_frequencies])
+            scores += idf_q * (f_q * (self.k1 + 1)) / (f_q + (self.k1 * (1 - self.b + (self.b * np.array(self.doc_len) / self.avg_dl))))
+
+        return scores
+    
+    def get_top_n(self, query: str, documents: list[str], top_n: int = 5):
+        if len(documents) != self.N:
+            raise ValueError("The documents do not match the indexed corpus")
+        
+        scores = self.get_scores(query)
+        top_n = np.argsort(scores)[::-1][:5]
+        return [{"doc_id": int(i), "doc": documents[i], "score": round(float(scores[i]), 3)} for i in top_n]
+```
+
 #### use module
+
+```python
+bm25 = BM25(corpus)
+print(bm25.nd)
+print(bm25.avg_dl)
+print(bm25.document_frequencies)
+```
+
+**Output:**
+
+```python
+{'apple': 6, 'banana': 5, 'mango': 4, 'strawberries': 5, 'cherry': 3, 'grapes': 2, 'blueberries': 3}
+3.1666666666666665
+[{'apple': 2, 'banana': 1}, {'banana': 2, 'mango': 1}, {'cherry': 2, 'strawberries': 1}, {'grapes': 3, 'strawberries': 1}, {'apple': 1, 'banana': 1, 'mango': 1}, {'blueberries': 1, 'strawberries': 1, 'apple': 1}, {'apple': 1, 'banana': 1, 'mango': 1}, {'grapes': 3}, {'blueberries': 1, 'apple': 1, 'strawberries': 1}, {'apple': 2, 'banana': 1}, {'cherry': 3, 'mango': 1}, {'blueberries': 1, 'strawberries': 1, 'cherry': 1}]
+```
+
+```python
+queries = [
+    "apple mango",
+    "grapes",
+    "banana mango",
+    "Cherry",
+    "apple",
+    "Blueberries Strawberries"
+]
+
+query = queries[2]
+
+print(f"Query: {query}")
+scores = bm25.get_scores(query)
+print(f"Scores: {scores}")
+docs = bm25.get_top_n(query, corpus)
+docs
+```
+
+**Output:**
+
+```python
+Query: banana mango
+Scores: [0.8791299  2.28476434 0.         0.         1.96334623 0.
+ 1.96334623 0.         0.         0.8791299  0.95776345 0.        ]
+[{'doc_id': 1, 'doc': 'Banana Mango Banana', 'score': 2.285},
+ {'doc_id': 6, 'doc': 'Apple Banana Mango', 'score': 1.963},
+ {'doc_id': 4, 'doc': 'Apple Banana Mango', 'score': 1.963},
+ {'doc_id': 10, 'doc': 'Cherry Cherry Mango Cherry', 'score': 0.958},
+ {'doc_id': 9, 'doc': 'Apple Banana Apple', 'score': 0.879}]
+```
