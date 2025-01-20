@@ -257,14 +257,14 @@ class BM25:
 
 The `BM25` class implements the BM25 algorithm from scratch. This class has 3 main methods:
 
-1. `__init__`: Initializes the BM25 model with the corpus and sets the parameters $k_1$ and $b$.
-2. `initialize`: This method calculates the `nd` and `document_frequencies`. `nd` is a dictionary that stores the number of documents containing each term, while `document_frequencies` is a list of dictionaries that store the term frequencies for each document. It also calculates the average document length `avg_dl`.
-3. `calculate_idf`: This method calculates the IDF values for each term in the corpus based on the formula provided earlier.
-4. `get_scores`: This method calculates the BM25 scores for each document in the corpus based on the query. It returns an array of scores for each document. While iterating over the query terms:
-   - It gets the IDF value for the term.
-   - It calculates the term frequency (f_{t, d}$ in the formula) for the term in each document.
-   - It calculates the BM25 score (as per the above formula) for the term in each document and adds it to the total score.
-5. `get_top_n`: This method retrieves the top `n` documents based on the BM25 scores. It returns a list of dictionaries containing the document ID, the document text, and the BM25 score for each of the top documents.
+1. `__init__()`: Initializes the BM25 model with the corpus and sets the parameters $k_1$ and $b$.
+2. `initialize()`: This method calculates the `nd` and `document_frequencies`. `nd` is a dictionary that stores the number of documents containing each term, while `document_frequencies` is a list of dictionaries that store the term frequencies for each document. It also calculates the average document length `avg_dl`.
+3. `calculate_idf()`: This method calculates the IDF values for each term in the corpus based on the formula provided earlier.
+4. `get_scores()`: This method calculates the BM25 scores for each document in the corpus based on the query. It returns an array of scores for each document. While iterating over the query terms:
+     - It gets the IDF value for the term.
+     - It calculates the term frequency (f_{t, d}$ in the formula) for the term in each document.
+     - It calculates the BM25 score (as per the above formula) for the term in each document and adds it to the total score.
+5. `get_top_n()`: This method retrieves the top `n` documents based on the BM25 scores. It returns a list of dictionaries containing the document ID, the document text, and the BM25 score for each of the top documents.
 
 #### use module
 

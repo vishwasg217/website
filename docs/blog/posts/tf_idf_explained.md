@@ -43,7 +43,9 @@ IDF: Inverse Document Frequency (IDF): This measures how unique or rare a word i
 
 Combining TF IDF:
 
-$$ TF-IDF = TF * IDF $$
+$$
+TF-IDF = TF * IDF
+$$
 
 High TF-IDF: The word is frequent in the document but rare in the corpus (important and unique).
 
@@ -96,16 +98,15 @@ $$
 
 ### Explanation
 
-1. **Where $t$ is the term**:
-   - A single word or token for which the TF-IDF score is being calculated.
-2. **Where $d$ is the document**:
-   - A specific document from the corpus $D$ where the term $t$ is being considered.
-3. **Where $D$ is the corpus**:
-   - The entire collection of documents.
-4. **Where $f_{t, d}$ is the term frequency**:
-   - The raw count of term $t$ in document $d$.
-5. **Where $\log$ is the logarithm function**:
-   - Used to scale down the effect of IDF when a term appears in many documents.
+- **Where $t$ is the term**: single word or token for which the TF-IDF score is being calculated.
+  
+- **Where $d$ is the document**: A specific document from the corpus $D$ where the term $t$ is being considered.
+
+- **Where $D$ is the corpus**: The entire collection of documents.
+
+- **Where $f_{t, d}$ is the term frequency**: The raw count of term $t$ in document $d$.
+  
+- **Where $\log$ is the logarithm function**: Used to scale down the effect of IDF when a term appears in many documents.
 
 ## Building TF-IDF from Scratch
 

@@ -45,3 +45,5 @@ a img:hover {
 [Understanding and Building ReAct Agents](./blog/posts/react_agent_from_scratch.md): A detailed guide on ReAct agents and building it from scratch.
 
 [Comprehensive Guide on TF-IDF](./blog/posts/tf_idf_explained.md): A detailed blog on TF-IDF and its workings under the hood.
+
+[BM25 Explained: A Better Ranking Algorithm than TF-IDF](./blog/posts/bm25_explained.md): A technical deepdive on BM25 and how it is better than TF-IDF.
