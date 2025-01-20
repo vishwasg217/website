@@ -3,9 +3,10 @@ date: 2025-01-01
 comments: true
 tags:
     - NLP
+    - RAG
     - Information Retrieval
 categories:
-    - NLP
+    - Information Retrieval
 ---
 
 # A Comprehensive Guide on TF-IDF

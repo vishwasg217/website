@@ -40,7 +40,7 @@ plugins:
       categories_allowed: 
         - AI
         - NLP
-        - RAG
+        - Information Retrieval
         - ML
         - Engineering
   
